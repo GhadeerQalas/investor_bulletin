@@ -88,20 +88,20 @@ Build a `FASTAPI` server that retrieve the latest stock market prices from and e
 
 - `GET /market-prices`
   - Returns the latest market prices for mentioned symbols.
-  - (../imgs/market_prices.jpg)
-  - (../imgs/market_prices_2.jpg)
+  - (../imgs/market_prices.png)
+  - (../imgs/market_prices_2.png)
 - `POST /alert-rules`
   - Creates an alert rule with the following properties: name, threshold price, and symbol.
-  - (../imgs/create_alert_rule.jpg)
+  - (../imgs/create_alert_rule.png)
 - `PATCH /alert-rules/{id}`
   - Update an alert rule by ID.
-  - (../imgs/update_alert_rule.jpg)
+  - (../imgs/update_alert_rule.png)
 - `DELETE /alert-rules/{id}`
   - Deletes an alert rule by ID.
-  - (../imgs/delete_alert_rule.jpg)
+  - (../imgs/delete_alert_rule.png)
 - `GET /alert-rules`
   - Returns all alert rules.
-  - (../imgs/alert_rules.jpg)
+  - (../imgs/alert_rules.png)
 - `GET /alerts`
   - Returns all alerts.
-  - (../imgs/get_alerts.jpg)
+  - (../imgs/get_alerts.png)
