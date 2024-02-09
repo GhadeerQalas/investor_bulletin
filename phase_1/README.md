@@ -92,7 +92,7 @@ Build a `FASTAPI` server that retrieve the latest stock market prices from and e
   - (../imgs/market_prices_2.png)
 - `POST /alert-rules`
   - Creates an alert rule with the following properties: name, threshold price, and symbol.
-  - (../imgs/create_alert_rule.png)
+  - ![alt text](../imgs/create_alert_rule.png)
 - `PATCH /alert-rules/{id}`
   - Update an alert rule by ID.
   - (../imgs/update_alert_rule.png)
