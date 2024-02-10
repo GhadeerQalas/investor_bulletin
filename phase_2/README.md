@@ -1,109 +1,63 @@
-# PHASE ONE (Getting to know FastAPI)
+# PHASE TWO (Creating publisher/Subscriber)
 
-![phase_one](../imgs/phase-one.jpg)
+![phase_two](../imgs/phase-two.jpg)
 
 ## Technology used
 
-- WEB SERVER - [FastAPI](https://fastapi.tiangolo.com/)
-- ORM - [SQLAlchemy](https://fastapi.tiangolo.com/advanced/async-sql-databases/?h=sqlalchemy#import-and-set-up-sqlalchemy)
-- DATABASE - [cockroachdb](https://www.cockroachlabs.com/)
-- Scheme Validation - [Pydantic](https://fastapi.tiangolo.com/tutorial/body-nested-models/)
+> 📢📢📢 please use `Topic Exchange` as your message routing agents [for more info](https://www.cloudamqp.com/blog/part4-rabbitmq-for-beginners-exchanges-routing-keys-bindings.html)
+
+- Publisher - [amqpstorm](https://www.amqpstorm.io/examples/simple_publisher.html)
+- Subscriber - [Pika](https://pika.readthedocs.io/en/stable/intro.html)
+- Broker [RabbitMQ](https://www.rabbitmq.com/tutorials/tutorial-one-python.html)
 
 ## Objectives
 
-Build a `FASTAPI` server that retrieve the latest stock market prices from and external resource [Rapid API](https://rapidapi.com/twelvedata/api/twelve-data1) and give the user the ability to manage a custom alert rules by preissiting them in a database so they can crate/update/delete/read thier rules
+to be able to publish `THRESHOLD_ALERT` event through a message queue and consume it thought a subscriber to that queue and print the result of that event and create a new alert record
 
 ## Functionality
 
-> 🚨 please don't waste some time to build and Authentication/Authorization functionality
-
-- **Retrieve the latest market prices**
-  - returns stock prices for the following symbols
-    - AAPL
-    - MSFT
-    - GOOG
-    - AMZN
-    - META
-- **Create alert rule**
-  - alerts have the following properties
-    - name
-    - threshold price
-    - symbol
-- **Delete alert rule**
-- **Get alerts rules**
-- **Update alerts rules**
-
-## Routes and Descriptions
-
-- `GET /market-prices`
-  - Returns the latest market prices for mentioned symbols.
-- `POST /alert-rules`
-  - Creates an alert rule with the following properties: name, threshold price, and symbol.
-- `PATCH /alert-rules/{id}`
-  - Update an alert rule by ID.
-- `DELETE /alert-rules/{id}`
-  - Deletes an alert rule by ID.
-- `GET /alert-rules`
-  - Returns all alert rules.
-- `GET /alerts`
-  - Returns all alerts.
+- **Publish a `THRESHOLD_ALERT` event**
+- **Consume the `THRESHOLD_ALERT` event and print the message aka the alert**
 
 ## TASKS Breakdown
 
-> 📢📢📢 if you're having issues with imports for example `ModuleNotFoundError: No module named 'api' , make sure to add investor_bulletin path in PYTHONPATH, e.g. `export PYTHONPATH="$(pwd)/investor_bulletin" && python investor_bulletin/api/main.py - please check this article https://www.devdungeon.com/content/python-import-syspath-and-pythonpath-tutorial`
-
+- [ ] **Copy all your work in phase one**
+--
 - [ ] **Set up your environment**
-      Whether on your machine or using docker, make sure you have an updated python version min `3.11` and a running a cockroachdb DB server
-      --
-- [ ] ## **Create your web server**
-- [ ] **Create an account and subscribe to Twelvedata API**
-      Twelvedata API is one of the multiple stock related APIs from [Rapid API](https://rapidapi.com/twelvedata/api/twelve-data1) - `💡 You can choose dif-ferent source API to retrieve the market data`
-      --
-- [ ] **Create your first endpoint to retrieve market data**
-      Required symbols/tickers `AAPL,MSFT,GOOG,AMZN,META`
-      --
-- [ ] ## **Use Pydantic to validate user inputs and server responses**
-- [ ] **Setup your ORM models (RuleAlerts, Alerts) and connect them with the DB server**
-      alerts should have the following properties `name, threshold price, symbol`
-      --
-- [ ] ## **Create a CRUD API for users to manage the alert rules**
-- [ ] ## **Seed the alerts table with data**
-- [ ] ## **Create an API to fetch alerts**
-- [ ] **Apply separation of concern by segregating your logic following the `investor_bulletin folder` structure there is already commented code to guid you through**
+ Whether on your machine or using docker, make sure you have a running rabbitmq broker
+--
+- [ ] **Get to know Rabbitmq and Configure the queues**
+--
+- [ ] **Create a publisher connection using amqpstorm inside the core/messaging.py file**
+--
+- [ ] **Publish a `THRESHOLD_ALERT` event by running the core/messaging.py file**
+--
+- [ ] **Create a consumer connection using pika inside the event_subscriber/main.py**
+--
+- [ ] **Consumed the published event and print the message by running the the event_subscriber/main.py**
+--
+- [ ] **Create an event record by using the alert_service.py**
 
 ## What's next
 
-- ## **If you complete the tasks**, just send an email with the a link of your work in your github,
+- **If you complete the tasks**, just send an email with the a link of your work in your github, tell us more about your comfort level out of 5 and what was the most challenging part and the most rewarding part.
+--
 
-  tell us more about your comfort level out of 5 and what was the most challenging part and the most rewarding part.
+- **If you stuck, or it took so long*- it ok, we understand just send an email with the a link of your work in your github, tell us more about your comfort level out of 5 and how much did you actually completed from the task out of 7, where are you stuck or what took the most of your time
 
-- \*_If you stuck, or it took so long_- it ok, we understand just send an email with the a link of your work in your github, tell us more about your comfort level out of 5 and how much did you actually completed from the task out of 7, where are you stuck or what took the most of your time
 
 ## Ghadeer Instructions
 
 - **Run the project**
-  - "Database creation" export PYTHONPATH="$(pwd)/investor_bulletin" && python3 investor_bulletin/db/models/models.py
-  - "Seed file" export PYTHONPATH="$(pwd)/investor_bulletin" && python3 investor_bulletin/resources/alerts/alert_data.py
-  - "The main service" export PYTHONPATH="$(pwd)/investor_bulletin" && python3 investor_bulletin/api/main.py
+  - I set-up the my own rabbitmq locally by using the docker:
+      - docker pull rabbitmq:3-management
+      - docker run -d --hostname my-rabbit --name some-rabbit -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+  - "Publisher" python3 investor_bulletin/core/messaging.py
+  - "Consumer" export PYTHONPATH="$(pwd)/investor_bulletin" && python3 investor_bulletin/event_subscriber/main.py
 
-## Routes and Descriptions (Output)
+## (Output)
+  - Publish a THRESHOLD_ALERT event by running the core/messaging.py file -- ![alt text](../imgs/market_prices.png)
+  - Create a consumer connection using pika inside the event_subscriber/main.py --
+  - Consumed the published event and printed the message by running the event_subscriber/main.py --
+  - Create an event record by using the alert_service.py
 
-- `GET /market-prices`
-  - Returns the latest market prices for mentioned symbols.
-  - (../imgs/market_prices.png)
-  - (../imgs/market_prices_2.png)
-- `POST /alert-rules`
-  - Creates an alert rule with the following properties: name, threshold price, and symbol.
-  - (../imgs/create_alert_rule.png)
-- `PATCH /alert-rules/{id}`
-  - Update an alert rule by ID.
-  - (../imgs/update_alert_rule.png)
-- `DELETE /alert-rules/{id}`
-  - Deletes an alert rule by ID.
-  - (../imgs/delete_alert_rule.png)
-- `GET /alert-rules`
-  - Returns all alert rules.
-  - (../imgs/alert_rules.png)
-- `GET /alerts`
-  - Returns all alerts.
-  - (../imgs/get_alerts.png)
