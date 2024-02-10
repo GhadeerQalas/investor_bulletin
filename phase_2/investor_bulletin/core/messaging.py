@@ -2,9 +2,11 @@ from amqpstorm import Connection
 import os
 from dotenv import load_dotenv
 import json
+from colorama import init, Fore
 
 # Load the .env file
 load_dotenv()
+init(autoreset=True)
 
 # Create a connection object to publish events
 connection = Connection(os.environ["HOSTNAME"], os.environ["RABBITMQ_DEFAULT_USER"], os.environ["RABBITMQ_DEFAULT_PASS"])
@@ -13,18 +15,22 @@ connection = Connection(os.environ["HOSTNAME"], os.environ["RABBITMQ_DEFAULT_USE
 channel = connection.channel()
 
 # Declare a queue to send to
-queue_name = 'alerts_queue'
-channel.queue.declare(queue_name)
+queue_name = 'alerts.threshhold'
+
+# Declare the exchange
+exchange_name = 'alerts_exchange'
+# topic exchange type is used to route messages to one or many queues based on a matching pattern between the message routing key and the pattern that was used to bind a queue to an exchange
+channel.exchange.declare(exchange=exchange_name, exchange_type='topic')
 
 # Publish a message
 message_body = { "eventName": "THRESHOLD_ALERT",
                 "eventData": {
-                "symbol": ["DELL"]
+                "symbol": ["Malaa"]
             },
         }
-channel.basic.publish(exchange='', routing_key=queue_name, body=json.dumps(message_body))
+channel.basic.publish(exchange=exchange_name, routing_key=queue_name, body=json.dumps(message_body))
 
-print(f" [x] Sent '{message_body}'")
+print(f"{Fore.GREEN} [x] Sent '{message_body}' to {queue_name} queue successfully! 🚀")
 
 # Close the connection
 connection.close()
