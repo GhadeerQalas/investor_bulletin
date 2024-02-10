@@ -56,8 +56,13 @@ to be able to publish `THRESHOLD_ALERT` event through a message queue and consum
   - "Consumer" export PYTHONPATH="$(pwd)/investor_bulletin" && python3 investor_bulletin/event_subscriber/main.py
 
 ## (Output)
-  - Publish a THRESHOLD_ALERT event by running the core/messaging.py file -- ![alt text](../imgs/market_prices.png)
+  - Publish a THRESHOLD_ALERT event by running the core/messaging.py file --
+   - ![alt text](../imgs/publisher.png)
+   - ![alt text](../imgs/rabbitmq_gui.png)
   - Create a consumer connection using pika inside the event_subscriber/main.py --
   - Consumed the published event and printed the message by running the event_subscriber/main.py --
+    - ![alt text](../imgs/consumer.png)
+    - ![alt text](../imgs/consumer_2.png)
   - Create an event record by using the alert_service.py
+    - ![alt text](../imgs/output_alert.png)
 
