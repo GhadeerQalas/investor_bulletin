@@ -37,9 +37,15 @@ if __name__ == "__main__":
     connection = init_subscriber()
     channel = connection.channel()
 
-    # Declare the queue from which to consume (it should be the same queue to which the publisher is publishing)
-    queue_name = 'alerts_queue'
-    channel.queue_declare(queue=queue_name)
+    # Declare the exchange and queue
+    exchange_name = 'alerts_exchange'
+    channel.exchange_declare(exchange=exchange_name, exchange_type='topic')
+    result = channel.queue_declare('', exclusive=True)
+    queue_name = result.method.queue
+
+    # Bind the queue to the exchange
+    binding_key = 'alerts.*'
+    channel.queue_bind(exchange=exchange_name, queue=queue_name, routing_key=binding_key)
 
     channel.basic_consume(queue=queue_name, on_message_callback=on_event, auto_ack=True)
 
