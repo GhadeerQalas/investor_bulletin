@@ -44,4 +44,8 @@ to be able to fetch the market data periodically every hour and check if any of 
 - **Output**
 
       - `THRESHOLD_ALERT` event will be published if there is a threshold crossover for any of the symbols
-        - (../imgs/threshold_alert.png)
+
+  - ![alt text](../imgs/celery.png)
+  - ![alt text](../imgs/celery_beat.png)
+  - ![alt text](../imgs/main_celery.png)
+  - ![alt text](../imgs/rabbitmq.png)
